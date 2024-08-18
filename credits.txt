@@ -1,1 +1,1 @@
-https://github.com/pydata/numexpr/blob/master/numexpr/cpuinfo.py
+numexpr: https://github.com/pydata/numexpr/blob/master/numexpr/cpuinfo.py
