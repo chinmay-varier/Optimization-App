@@ -49,7 +49,8 @@ def disableXbox():
             k.writelines(str(datetime.datetime.now()) + ' : --XBOX SERVICES DISABLED --\n')
 
 def restart():
-    os.system("shutdown /r")with open('temp.txt', 'r') as f:
+    os.system("shutdown /r")
+    with open('temp.txt', 'r') as f:
         with open(f.read(), 'a+') as k:
             k.writelines(str(datetime.datetime.now()) + ' : -- SYS RESTART --\n')
 
