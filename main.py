@@ -4,7 +4,6 @@ import customtkinter
 import tkinter
 from after_login import App
 import mysql.connector as ms
-import os
 
 app = CTk()
 app.geometry("1600x900")
