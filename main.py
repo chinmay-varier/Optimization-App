@@ -12,7 +12,7 @@ app.geometry("1600x900")
 customtkinter.set_default_color_theme("green")
 k = False
 
-user = "C"
+user = ""
 
 cnct = ms.connect(user='admin', password='password', host='localhost', database='appdetails')
 

@@ -1,0 +1,5 @@
+customtkinter==5.2.2
+GPUtil==1.4.0
+mysql-connector-python==9.0.0
+psutil==6.0.0
+tk==0.1.0
