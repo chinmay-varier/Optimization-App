@@ -6,10 +6,8 @@ import cpuinfo
 import GPUtil
 import tkinter
 
-home_count = 0
 
 wind = ''
-
 
 def App(username):
     def HomePage():

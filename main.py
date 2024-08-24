@@ -4,14 +4,15 @@ import customtkinter
 import tkinter
 from after_login import App
 import mysql.connector as ms
+import os
 
 app = CTk()
 app.geometry("1600x900")
 
 customtkinter.set_default_color_theme("green")
-login = False
+k = False
 
-user = ""
+user = "C"
 
 cnct = ms.connect(user='admin', password='password', host='localhost', database='appdetails')
 
@@ -20,19 +21,30 @@ def Register():
     def check():
         cursor = cnct.cursor()
         cursor.execute('use appdetails')
-
+        user = user_entry.get()
         if user_pass.get() == user_pass2.get():
             try:
-                cursor.execute(f"insert into info values('{user_entry.get()}', '{user_pass.get()}')")
+                cursor.execute(f"insert into info values('{user_entry.get()}', '{user_pass.get()}', NULL)")
                 cnct.commit()
-                tkinter.messagebox.showinfo(title="Success", message="Registered Successfully!")
+                tkinter.messagebox.showinfo(title="Success", message="Registered Successfully! Please Select A Folder To Save LOGS")
                 regWin.destroy()
+                app.withdraw()
+                global k
+                k = True
             except:
                 tkinter.messagebox.showwarning(title="Username", message="Please Choose an Unique USERNAME!")
                 
         else:
             tkinter.messagebox.showwarning(title="Password", message="Password doesn't match!")  
-            
+
+        if k == True:
+            filename = filedialog.askopenfilename()
+            cursor.execute(f"UPDATE INFO SET Log='{filename}' where Username='{user}'")
+            cnct.commit()
+            cnct.close()
+            with open('temp.txt', 'w') as f:
+                f.write(filename)
+            App(user)    
         
         
 
@@ -57,15 +69,22 @@ def Register():
     
 def Login():
     def check():
+        passk = user_pass.get()
+        us = user_entry.get()
         cursor = cnct.cursor()
         cursor.execute('use appdetails')
-        cursor.execute(f"SELECT EXISTS(SELECT * FROM info WHERE Username='{user_entry.get()}');")
-        if cursor.fetchone()[0] == 1:
+        cursor.execute(f"SELECT * FROM info WHERE Username='{us}'")
+        d = cursor.fetchall()[0]
+        if d[0] == us and d[1] == passk:
             tkinter.messagebox.showinfo(title="Signed In", message="Sign in was successful!")
             global user
-            user = user_entry.get()
+            user = us
             regWin.destroy()
             app.withdraw()
+            cursor.execute(f"SELECT Log from info where Username='{us}'")
+            with open('temp.txt', 'w') as f:
+                f.write(cursor.fetchone()[0])
+            cnct.close()
             App(user)
         else:
             tkinter.messagebox.showwarning(title="Error", message="Please check the username and password!")
